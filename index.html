@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>卖车指南</title>
@@ -28,6 +29,7 @@
     body {
       background-color: var(--bg-page);
     }
+
     .markdown-section {
       background-color: var(--bg-page);
     }
@@ -38,7 +40,7 @@
     }
 
     /* 侧边栏导航激活/悬停状态 */
-    .sidebar-nav .active > a,
+    .sidebar-nav .active>a,
     .sidebar-nav a:hover {
       color: var(--theme-color) !important;
     }
@@ -72,6 +74,7 @@
     .markdown-section a {
       color: var(--theme-color);
     }
+
     .markdown-section a:hover {
       color: var(--theme-color-hover);
     }
@@ -103,6 +106,7 @@
       pointer-events: none !important;
       cursor: default !important;
     }
+
     /* 去掉 anchor 链接内的 span 底部边框（Docsify 默认样式） */
     .cover h1 a.anchor span,
     .cover h2 a.anchor span,
@@ -130,6 +134,7 @@
       cursor: pointer;
       transition: all 0.3s;
     }
+
     .cover .btn-primary:hover,
     .cover a.btn-primary:hover {
       background-color: var(--theme-color-hover) !important;
@@ -152,6 +157,7 @@
       cursor: pointer;
       transition: all 0.3s;
     }
+
     .cover .btn-secondary:hover,
     .cover a.btn-secondary:hover {
       background-color: var(--theme-color) !important;
@@ -167,6 +173,7 @@
     }
   </style>
 </head>
+
 <body>
   <div id="app"></div>
   <script>
@@ -174,9 +181,12 @@
       name: '卖车指南',
       repo: '',
       coverpage: true,
+      loadSidebar: true,
+      onlyCover: true, 
     }
   </script>
   <!-- Docsify v4 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
 </body>
+
 </html>
