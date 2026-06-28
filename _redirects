@@ -1,2 +1,7 @@
-/:**/_sidebar.md - 404
-/:**/*.md - 404
+/_sidebar.md - 404
+/*/_sidebar.md - 404
+/*/*/_sidebar.md - 404
+
+/*.md - 404
+/*/*.md - 404
+/*/*/*.md - 404
