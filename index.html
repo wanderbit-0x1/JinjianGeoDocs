@@ -243,7 +243,14 @@
   <script>
     // 页面加载后插入「复制全文」按钮，并监听路由变化
     function insertCopyAllBtn() {
-      if (document.querySelector('.copy-all-btn')) return;
+      // 封面页不显示按钮
+      if (document.querySelector('section.cover.show')) {
+        var oldBtn = document.querySelector('.copy-all-btn');
+        if (oldBtn) oldBtn.style.display = 'none';
+        return;
+      }
+      var existing = document.querySelector('.copy-all-btn');
+      if (existing) { existing.style.display = ''; return; }
       var btn = document.createElement('button');
       btn.className = 'copy-all-btn';
       btn.textContent = '复制全文';
