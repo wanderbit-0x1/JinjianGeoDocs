@@ -19,16 +19,20 @@
       --text-body: #4A6280;
 
       /* 背景色 */
-      --bg-page: #FFF1E6;
-      --bg-sidebar: #FFF1E6;
+      --bg-page: #FFFFFF;
+      --bg-sidebar: #FFF8F2;
+      --bg-cover: #FFF1E6;
     }
 
-    /* 全局背景 */
-    body, .markdown-section {
+    /* 文档背景 - 白色 */
+    body {
+      background-color: var(--bg-page);
+    }
+    .markdown-section {
       background-color: var(--bg-page);
     }
 
-    /* 侧边栏背景 */
+    /* 侧边栏背景 - 极浅暖白 */
     .sidebar {
       background-color: var(--bg-sidebar);
     }
@@ -73,15 +77,37 @@
     }
 
     /* ========== 封面页样式 ========== */
-    /* 封面页背景 - 奶油色 */
-    .cover {
-      background-color: var(--bg-page) !important;
-      background-image: none !important;
+    /* 封面页背景 - 覆盖 Docsify 动态内联渐变背景 */
+    section.cover.show {
+      background:
+        linear-gradient(rgba(255, 241, 230, 0.72), rgba(255, 241, 230, 0.72)),
+        url('images/cover-bg.jpg') !important;
+      background-size: cover !important;
+      background-position: center !important;
+      background-repeat: no-repeat !important;
     }
 
     /* 封面标题 - 深蓝灰 */
-    .cover h1 {
+    .cover h1,
+    .cover h2,
+    .cover h3 {
       color: var(--text-title) !important;
+    }
+
+    /* 去掉封面标题内 Docsify 自动生成的 anchor 链接样式 */
+    .cover h1 a.anchor,
+    .cover h2 a.anchor,
+    .cover h3 a.anchor {
+      color: var(--text-title) !important;
+      text-decoration: none !important;
+      pointer-events: none !important;
+      cursor: default !important;
+    }
+    /* 去掉 anchor 链接内的 span 底部边框（Docsify 默认样式） */
+    .cover h1 a.anchor span,
+    .cover h2 a.anchor span,
+    .cover h3 a.anchor span {
+      border-bottom: none !important;
     }
 
     /* 封面副标题/描述 */
