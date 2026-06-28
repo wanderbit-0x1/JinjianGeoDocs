@@ -7,13 +7,147 @@
   <meta name="description" content="卖车指南——专注为车主提供二手车卖车攻略、估价技巧、过户流程及防坑指南，帮你卖得省心、卖得划算。">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <style>
+    :root {
+      /* 主色 - 砖橘/赤陶色 */
+      --theme-color: #C4521A;
+      --theme-color-hover: #A84416;
+      --theme-color-disabled: #D9905A;
+
+      /* 文字色 - 蓝灰系 */
+      --text-title: #2D4A6A;
+      --text-body: #4A6280;
+
+      /* 背景色 */
+      --bg-page: #FFF1E6;
+      --bg-sidebar: #FFF1E6;
+    }
+
+    /* 全局背景 */
+    body, .markdown-section {
+      background-color: var(--bg-page);
+    }
+
+    /* 侧边栏背景 */
+    .sidebar {
+      background-color: var(--bg-sidebar);
+    }
+
+    /* 侧边栏导航激活/悬停状态 */
+    .sidebar-nav .active > a,
+    .sidebar-nav a:hover {
+      color: var(--theme-color) !important;
+    }
+
+    /* 标题文字 - 深蓝灰 */
+    .markdown-section h1,
+    .markdown-section h2,
+    .markdown-section h3,
+    .markdown-section h4,
+    .markdown-section h5,
+    .markdown-section h6 {
+      color: var(--text-title) !important;
+    }
+
+    /* 正文文字 */
+    .markdown-section p,
+    .markdown-section li,
+    .markdown-section td,
+    .markdown-section th {
+      color: var(--text-body);
+    }
+
+    /* 顶部导航链接 */
+    .app-nav li a:hover,
+    .app-nav li a.active {
+      color: var(--theme-color) !important;
+      border-color: var(--theme-color) !important;
+    }
+
+    /* 链接颜色 */
+    .markdown-section a {
+      color: var(--theme-color);
+    }
+    .markdown-section a:hover {
+      color: var(--theme-color-hover);
+    }
+
+    /* ========== 封面页样式 ========== */
+    /* 封面页背景 - 奶油色 */
+    .cover {
+      background-color: var(--bg-page) !important;
+      background-image: none !important;
+    }
+
+    /* 封面标题 - 深蓝灰 */
+    .cover h1 {
+      color: var(--text-title) !important;
+    }
+
+    /* 封面副标题/描述 */
+    .cover p {
+      color: var(--text-body) !important;
+    }
+
+    /* 主按钮（实心）- 砖橘底色 + 白字 + 胶囊圆角 */
+    .cover .btn-primary,
+    .cover a.btn-primary {
+      color: #FFFFFF !important;
+      background-color: var(--theme-color) !important;
+      border: none !important;
+      border-radius: 999px !important;
+      padding: 12px 30px;
+      margin: 0 8px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .cover .btn-primary:hover,
+    .cover a.btn-primary:hover {
+      background-color: var(--theme-color-hover) !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(196, 82, 26, 0.4);
+    }
+
+    /* 次按钮（描边）- 透明底 + 砖橘边框 + 砖橘字 */
+    .cover .btn-secondary,
+    .cover a.btn-secondary {
+      color: var(--theme-color) !important;
+      background-color: transparent !important;
+      border: 1.5px solid var(--theme-color) !important;
+      border-radius: 999px !important;
+      padding: 12px 30px;
+      margin: 0 8px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .cover .btn-secondary:hover,
+    .cover a.btn-secondary:hover {
+      background-color: var(--theme-color) !important;
+      color: #FFFFFF !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(196, 82, 26, 0.4);
+    }
+
+    /* 封面页按钮通用样式（兼容没有 btn-primary/btn-secondary 类的情况） */
+    .cover button,
+    .cover a {
+      border-radius: 999px !important;
+    }
+  </style>
 </head>
 <body>
   <div id="app"></div>
   <script>
     window.$docsify = {
       name: '卖车指南',
-      repo: ''
+      repo: '',
+      coverpage: true,
     }
   </script>
   <!-- Docsify v4 -->
