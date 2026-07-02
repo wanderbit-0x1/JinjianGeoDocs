@@ -196,10 +196,6 @@
 
     /* ========== 全文复制按钮样式 ========== */
     .copy-all-btn {
-      position: fixed;
-      top: 60px;
-      right: 30px;
-      z-index: 100;
       background: var(--theme-color);
       color: #FFFFFF;
       border: none;
@@ -220,6 +216,25 @@
 
     .copy-all-btn.copied {
       background: #52c41a;
+    }
+
+    /* ========== 字数和按钮容器 ========== */
+    .page-tools {
+      position: fixed;
+      top: 60px;
+      right: 30px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    /* ========== 字数统计样式 ========== */
+    .word-count {
+      color: var(--text-body);
+      font-size: 13px;
+      cursor: default;
+      opacity: 0.7;
     }
   </style>
 </head>
@@ -252,18 +267,55 @@
   <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
   <!-- 一键复制代码插件 -->
   <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
-  <!-- 全文复制按钮 -->
+  <!-- 全文复制按钮和字数统计 -->
   <script>
-    // 页面加载后插入「复制全文」按钮，并监听路由变化
-    function insertCopyAllBtn() {
-      // 封面页不显示按钮
-      if (document.querySelector('section.cover.show')) {
-        var oldBtn = document.querySelector('.copy-all-btn');
-        if (oldBtn) oldBtn.style.display = 'none';
+    // 获取或创建工具栏容器
+    function getOrCreateToolsContainer() {
+      var container = document.querySelector('.page-tools');
+      if (container) return container;
+      
+      container = document.createElement('div');
+      container.className = 'page-tools';
+      document.body.appendChild(container);
+      return container;
+    }
+
+    // 显示或隐藏工具栏
+    function toggleToolsContainer(show) {
+      var container = document.querySelector('.page-tools');
+      if (container) {
+        container.style.display = show ? '' : 'none';
+      }
+    }
+
+    // 统计当前文档字数
+    function updateWordCount(container) {
+      var content = document.querySelector('.markdown-section');
+      if (!content) return;
+      
+      // 获取纯文本
+      var text = content.innerText || content.textContent;
+      // 统计字数（去掉空白字符，计算中文字符和英文单词）
+      var chineseChars = text.match(/[\u4e00-\u9fa5]/g) || [];
+      var englishWords = text.match(/[a-zA-Z]+/g) || [];
+      var totalCount = chineseChars.length + englishWords.length;
+      
+      // 创建或更新字数显示
+      var existing = container.querySelector('.word-count');
+      if (existing) {
+        existing.textContent = '字数: ' + totalCount;
         return;
       }
-      var existing = document.querySelector('.copy-all-btn');
-      if (existing) { existing.style.display = ''; return; }
+      var countDiv = document.createElement('div');
+      countDiv.className = 'word-count';
+      countDiv.textContent = '字数: ' + totalCount;
+      container.insertBefore(countDiv, container.firstChild);
+    }
+
+    // 插入「复制全文」按钮
+    function insertCopyAllBtn(container) {
+      var existing = container.querySelector('.copy-all-btn');
+      if (existing) { return; }
       var btn = document.createElement('button');
       btn.className = 'copy-all-btn';
       btn.textContent = '复制全文';
@@ -281,13 +333,49 @@
           }, 1500);
         });
       };
-      document.body.appendChild(btn);
+      container.appendChild(btn);
     }
-    // Docsify 路由切换后重新插入按钮
-    document.addEventListener('DOMContentLoaded', insertCopyAllBtn);
-    window.addEventListener('hashchange', insertCopyAllBtn);
+
+    // 更新所有信息（字数和按钮）
+    function updatePageInfo() {
+      var container = getOrCreateToolsContainer();
+      
+      // 统一判断是否是封面页
+      var isCoverPage = document.querySelector('section.cover.show') !== null;
+      
+      if (isCoverPage) {
+        // 封面页：隐藏工具栏
+        toggleToolsContainer(false);
+        return;
+      }
+      
+      // 文档页：显示工具栏，更新字数和按钮
+      toggleToolsContainer(true);
+      updateWordCount(container);
+      insertCopyAllBtn(container);
+    }
+
+    // 使用 Docsify 的 doneEach 钩子，每次页面切换后执行
+    window.$docsify.hooks = window.$docsify.hooks || {};
+    window.$docsify.hooks.doneEach = function() {
+      // 延迟执行，确保 DOM 已更新
+      setTimeout(updatePageInfo, 100);
+    };
+
+    // 备用：监听 Docsify 的内容渲染完成事件
+    window.addEventListener('docsify:rendered', function() {
+      setTimeout(updatePageInfo, 100);
+    });
+    
+    // 监听 hash 变化（处理浏览器前进后退）
+    window.addEventListener('hashchange', function() {
+      setTimeout(updatePageInfo, 100);
+    });
+
     // 初次加载
-    setTimeout(insertCopyAllBtn, 500);
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(updatePageInfo, 500);
+    });
   </script>
 </body>
 
