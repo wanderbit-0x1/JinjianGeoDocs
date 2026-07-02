@@ -288,18 +288,15 @@
       }
     }
 
-    // 统计当前文档字数
+    // 统计当前文档字数（简单字符统计：每个字符算一个）
     function updateWordCount(container) {
       var content = document.querySelector('.markdown-section');
       if (!content) return;
-      
-      // 获取纯文本
-      var text = content.innerText || content.textContent;
-      // 统计字数（去掉空白字符，计算中文字符和英文单词）
-      var chineseChars = text.match(/[\u4e00-\u9fa5]/g) || [];
-      var englishWords = text.match(/[a-zA-Z]+/g) || [];
-      var totalCount = chineseChars.length + englishWords.length;
-      
+
+      // 获取纯文本，去掉换行符，统计所有字符（包括空格）
+      var text = (content.innerText || content.textContent).replace(/[\n\r]/g, '');
+      var totalCount = text.length;
+
       // 创建或更新字数显示
       var existing = container.querySelector('.word-count');
       if (existing) {
