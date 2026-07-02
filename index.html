@@ -289,16 +289,7 @@
     }
 
     // 统计当前文档字数
-    function updateWordCount() {
-      var container = getOrCreateToolsContainer();
-      
-      // 封面页不显示字数
-      if (document.querySelector('section.cover.show')) {
-        toggleToolsContainer(false);
-        return;
-      }
-      
-      toggleToolsContainer(true);
+    function updateWordCount(container) {
       var content = document.querySelector('.markdown-section');
       if (!content) return;
       
@@ -322,14 +313,7 @@
     }
 
     // 插入「复制全文」按钮
-    function insertCopyAllBtn() {
-      var container = getOrCreateToolsContainer();
-      
-      // 封面页不显示按钮
-      if (document.querySelector('section.cover.show')) {
-        return;
-      }
-      
+    function insertCopyAllBtn(container) {
       var existing = container.querySelector('.copy-all-btn');
       if (existing) { return; }
       var btn = document.createElement('button');
@@ -354,19 +338,44 @@
 
     // 更新所有信息（字数和按钮）
     function updatePageInfo() {
-      updateWordCount();
-      insertCopyAllBtn();
+      var container = getOrCreateToolsContainer();
+      
+      // 统一判断是否是封面页
+      var isCoverPage = document.querySelector('section.cover.show') !== null;
+      
+      if (isCoverPage) {
+        // 封面页：隐藏工具栏
+        toggleToolsContainer(false);
+        return;
+      }
+      
+      // 文档页：显示工具栏，更新字数和按钮
+      toggleToolsContainer(true);
+      updateWordCount(container);
+      insertCopyAllBtn(container);
     }
 
-    // Docsify 路由切换后重新更新信息
-    document.addEventListener('DOMContentLoaded', function() {
-      updatePageInfo();
-      // 监听 Docsify 的内容渲染完成事件
-      window.addEventListener('docsify:rendered', updatePageInfo);
+    // 使用 Docsify 的 doneEach 钩子，每次页面切换后执行
+    window.$docsify.hooks = window.$docsify.hooks || {};
+    window.$docsify.hooks.doneEach = function() {
+      // 延迟执行，确保 DOM 已更新
+      setTimeout(updatePageInfo, 100);
+    };
+
+    // 备用：监听 Docsify 的内容渲染完成事件
+    window.addEventListener('docsify:rendered', function() {
+      setTimeout(updatePageInfo, 100);
     });
-    window.addEventListener('hashchange', updatePageInfo);
+    
+    // 监听 hash 变化（处理浏览器前进后退）
+    window.addEventListener('hashchange', function() {
+      setTimeout(updatePageInfo, 100);
+    });
+
     // 初次加载
-    setTimeout(updatePageInfo, 500);
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(updatePageInfo, 500);
+    });
   </script>
 </body>
 
